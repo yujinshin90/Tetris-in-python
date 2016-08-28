@@ -2,13 +2,13 @@ from random import randrange as rand
 import pygame, sys
 
 #set up the board layout
-cell_size =	18
+cell_size = 18
 cols = 10
 rows =	22
 maxfps = 30
 
 #define each of the tetris shape objects
-tetris_piece = [
+tetris_pieces = [
 	[[1, 1, 1],
 	 [0, 1, 0]],
 	
@@ -70,3 +70,17 @@ def join_board(b1, b2, offset):
 
 class Tetris_App(object):
 	def __init__(self):
+		pygame.init()
+		pygame.key.set_repeat(250,25)
+		self.disp_width = cell_size*(cols+6)
+		self.height = cell_size*rows
+		self.width = cell_size*cols
+		self.bground = [[ 8 if x%2 == y%2 else 0 for x in xrange (cols)] for y in xrange(rows)]
+		
+		#pygame related GUI stuff for board and game settings
+		self.default_font = pygame.font.Font(pygame.font.get_default_font(), 12)
+		self.screen = pygame.display.set_mode((self.width, self.disp_height))
+		pygame.event.set_blocked(pygame.MOUSEMOTION) 
+		
+		self.next_stone = tetris_shapes[rand(len(tetris_pieces))]
+		self.init_game()
