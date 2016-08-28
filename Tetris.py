@@ -30,11 +30,11 @@ tetris_piece = [
 	 [1, 1]]
 ]
 
-#methd to reset board: clears everything but the top row
+#method to reset board: clears everything but the top row
 def new_board():
 	board = [[0 for x in xrange(cols)]
 				for y in xrange(rows)]
-	board += [[0 for x in xrange(cols)]]
+	board += [[1 for x in xrange(cols)]]
 	return board
 
 #define helper methods used in moving the pieces
@@ -43,6 +43,7 @@ def rotate_clock(piece):
 			for y in xrange(len(piece)) ]
 		for x in xrange(len(piece[0]) - 1, -1, -1) ]
 
+#checks for collision and returns true if parts overlap, else false
 def is_collsion(board, piece, offset):
 	offx, offy = offset
 	for y, row in enumerate(piece):
@@ -53,3 +54,19 @@ def is_collsion(board, piece, offset):
 			except IndexError:
 				return True
 	return False
+
+#clears row and returns an updated board
+def clear_row(board, row):
+	del board[row]
+	return[[0 for i in xrange(cols)]] + board
+
+#joins/ adds two boards together with the option of adding an offset
+def join_board(b1, b2, offset):
+	off_x, off_y = offset
+	for y, row in enumerate(b2):
+		for x, val in enumerate(row):
+			b1[y+off_y-1][x+off_x] += val
+	return b1
+
+class Tetris_App(object):
+	def __init__(self):
