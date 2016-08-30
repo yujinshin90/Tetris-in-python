@@ -82,5 +82,24 @@ class Tetris_App(object):
 		self.screen = pygame.display.set_mode((self.width, self.disp_height))
 		pygame.event.set_blocked(pygame.MOUSEMOTION) 
 		
-		self.next_stone = tetris_shapes[rand(len(tetris_pieces))]
+		self.next_piece = tetris_pieces[rand(len(tetris_pieces))]
 		self.init_game()
+	
+	def new_piece(self):
+		self.piece = self.next_piece[:]
+		self.next_piece = tetris_pieces[rand(len(tetris_shapes))]
+		self.piece_x = int(cols/2 - len(self.piece[0])/2)
+		self.piece_y = 0
+		if is_collision(self.board, self.piece, (self.piece_x, self.piece_y)):
+			self.gameover = True
+	
+	def init_game(self):
+		self.board = new_board()
+		self.new_piece()
+		self.level = 1
+		self.score = 0
+		self.lines = 0
+		pygame.time.set_timer(pygame.USEREVENT+1, 1000)
+
+		
+
