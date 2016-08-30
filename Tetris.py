@@ -85,6 +85,23 @@ class Tetris_App(object):
 		self.next_piece = tetris_pieces[rand(len(tetris_pieces))]
 		self.init_game()
 	
+	def disp_msg(self, msg, topleft):
+		x, y = topleft
+		for line in msg.splitlines():
+			self.screen.blit(
+				self.default_font.render(
+					line, False, (255, 255, 255), (0,0,0)),
+				(x,y))
+			y+=14
+	def center_msg(self, msg):
+		for i, line in enumerate(msg.splitlines()):
+			msg_image = self.default_font.render(line, False, (255, 255, 255), (0,0,0))
+			cx, cy = msg_image.get_size()
+			cx //= 2 #floor division
+			cy //= 2
+			self.screen.blit(msg_image, (self.width // 2-cx, self.height // 2-cy+1*22))
+
+	
 	def new_piece(self):
 		self.piece = self.next_piece[:]
 		self.next_piece = tetris_pieces[rand(len(tetris_shapes))]
@@ -100,6 +117,5 @@ class Tetris_App(object):
 		self.score = 0
 		self.lines = 0
 		pygame.time.set_timer(pygame.USEREVENT+1, 1000)
-
 		
 
