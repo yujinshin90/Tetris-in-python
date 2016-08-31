@@ -118,4 +118,15 @@ class Tetris_App(object):
 		self.lines = 0
 		pygame.time.set_timer(pygame.USEREVENT+1, 1000)
 		
+	def draw_matrix(self, matrix, offset):
+		off_x, off_y = offset
+		for y, row in enumerate(matrix):
+			for x, val in enumerate(row):
+				if val:
+					pygame.draw.rect(
+						self.screen, colors[val]. pygame.Rect(
+							(off_x + x) * cell_size,
+							(off_y + y) * cell_size.
+							cell_size,
+							cell_size), 0)
 
