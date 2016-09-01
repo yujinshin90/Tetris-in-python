@@ -130,3 +130,22 @@ class Tetris_App(object):
 							cell_size,
 							cell_size), 0)
 
+	def add_block(self, n):
+		linescores = [0,40,100,300,1200]
+		self.lines += n
+		self.score += linescores[n] * self.level
+		if self.lines >= self.level*6:
+			slef.level += 1
+			newdeay = 1000-50*(self.level-1)
+			newdelay = 100 if newdelay < 100 else newdelay
+			pygame.time.set_timer(pygame.USEREVENT+1, newdelay)
+
+	def move(self, off_x):
+		if not self.gameover and not self.paused:
+			new_x = self.piece_x + off_x
+			if new_x < 0:
+				new_x = 0
+			if new_x > cols - len(self.stone[0]):
+				new_x = cols - len(self.stone[0])
+			if not is_collision(self.board, self.piece, (new_x, self.piece_y)):
+				self.piece_x = new_x
