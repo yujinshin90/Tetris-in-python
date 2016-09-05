@@ -30,6 +30,18 @@ tetris_pieces = [
      [1, 1]]
 ]
 
+colors = [
+    (0,   0,   0  ),
+    (255, 85,  85),
+    (100, 200, 115),
+    (120, 108, 245),
+    (255, 140, 50 ),
+    (50,  120, 52 ),
+    (146, 202, 73 ),
+    (150, 161, 218 ),
+    (35,  35,  35)
+]
+
 
 # method to reset board: clears everything but the top row
 def new_board():
@@ -80,12 +92,12 @@ class Tetris_App(object):
         pygame.key.set_repeat(250, 25)
         self.disp_width = cell_size * (cols + 6)
         self.height = cell_size * rows
-        self.width = cell_size * cols
+        self.board_width = cell_size * cols
         self.bground = [[8 if x % 2 == y % 2 else 0 for x in xrange(cols)] for y in xrange(rows)]
 
         # pygame related GUI stuff for board and game settings
         self.default_font = pygame.font.Font(pygame.font.get_default_font(), 12)
-        self.screen = pygame.display.set_mode((self.width, self.disp_height))
+        self.screen = pygame.display.set_mode((self.disp_width, self.disp_height))
         pygame.event.set_blocked(pygame.MOUSEMOTION)
 
         self.next_piece = tetris_pieces[rand(len(tetris_pieces))]
@@ -106,11 +118,11 @@ class Tetris_App(object):
             cx, cy = msg_image.get_size()
             cx //= 2  # floor division
             cy //= 2
-            self.screen.blit(msg_image, (self.width // 2 - cx, self.height // 2 - cy + 1 * 22))
+            self.screen.blit(msg_image, (self.disp_width // 2 - cx, self.height // 2 - cy + 1 * 22))
 
     def new_piece(self):
         self.piece = self.next_piece[:]
-        self.next_piece = tetris_pieces[rand(len(tetris_shapes))]
+        self.next_piece = tetris_pieces[rand(len(tetris_pieces))]
         self.piece_x = int(cols / 2 - len(self.piece[0]) / 2)
         self.piece_y = 0
         if is_collision(self.board, self.piece, (self.piece_x, self.piece_y)):
@@ -202,6 +214,42 @@ class Tetris_App(object):
         self.center_msg("Good bye :(")
         pygame.display.update()
         sys.exit()
+
+    def run(self):
+        key_actions = {
+            'ESCAPE':
+                self.quit,
+            'LEFT':
+                lambda:self.move(-1),
+            'RIGHT':
+                lambda:self.move(+1),
+            'DOWN':
+                lambda:self.drop(True),
+            'UP':
+                self.rotate,
+            'p':
+                self.pause,
+            'SPACE':
+                self.start,
+            'RETURN':
+                self.quick_drop
+        }
+        self.gameover = False
+        self.paused = False
+        cpu = pygame.time.Clock()
+        while 1:
+            self.screen.fill((0,0,0))
+            if self.gameover:
+                self.center_msg("Game Over!\n Your score: %d\n\n Press space to continue" % self.score)
+            else:
+                if self.paused:
+                    self.center_msg("Paused")
+                else:
+                    pygame.draw.line(self.screen,
+                                     (255, 255, 255),
+                                     (self.board_width+1, 0),
+                                     (self.board_width+1, self.height-1))
+                    self.disp_msg("Next: ", (self.board_width+cell_size, 2))
 
 if __name__ == "__main__":
     App = Tetris_App()
