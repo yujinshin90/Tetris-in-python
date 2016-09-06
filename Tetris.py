@@ -251,6 +251,12 @@ class Tetris_App(object):
                                      (self.board_width+1, self.height-1))
                     self.disp_msg("Next: ", (self.board_width+cell_size, 2))
 
+        self.disp_msg("Score: %d\n\nLevel: %d\nLines: %d" %(self.score, self.level, self.lines),
+                      (self.board_width+cell_size, cell_size*5))
+        self.draw_matrix(self.bground_grid, (0,0))
+        self.draw_matrix(self.board, (0,0))
+        self.draw_matrix(self.piece, (self.piece_x, self.piece_y))
+
 if __name__ == "__main__":
     App = Tetris_App()
     App.run()
