@@ -163,8 +163,8 @@ class Tetris_App(object):
             new_x = self.piece_x + off_x
             if new_x < 0:
                 new_x = 0
-            if new_x > cols - len(self.stone[0]):
-                new_x = cols - len(self.stone[0])
+            if new_x > cols - len(self.piece[0]):
+                new_x = cols - len(self.piece[0])
             if not is_collision(self.board, self.piece, (new_x, self.piece_y)):
                 self.piece_x = new_x
 
