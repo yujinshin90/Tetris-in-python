@@ -93,11 +93,11 @@ class Tetris_App(object):
         self.disp_width = cell_size * (cols + 6)
         self.height = cell_size * rows
         self.board_width = cell_size * cols
-        self.bground = [[8 if x % 2 == y % 2 else 0 for x in xrange(cols)] for y in xrange(rows)]
+        self.grid = [[8 if x % 2 == y % 2 else 0 for x in xrange(cols)] for y in xrange(rows)]
 
         # pygame related GUI stuff for board and game settings
         self.default_font = pygame.font.Font(pygame.font.get_default_font(), 12)
-        self.screen = pygame.display.set_mode((self.disp_width, self.disp_height))
+        self.screen = pygame.display.set_mode((self.disp_width, self.height))
         pygame.event.set_blocked(pygame.MOUSEMOTION)
 
         self.next_piece = tetris_pieces[rand(len(tetris_pieces))]
@@ -142,9 +142,9 @@ class Tetris_App(object):
             for x, val in enumerate(row):
                 if val:
                     pygame.draw.rect(
-                        self.screen, colors[val].pygame.Rect(
+                        self.screen, colors[val], pygame.Rect(
                             (off_x + x) * cell_size,
-                            (off_y + y) * cell_size.
+                            (off_y + y) * cell_size,
                             cell_size,
                             cell_size), 0)
 
@@ -253,7 +253,7 @@ class Tetris_App(object):
 
                     self.disp_msg("Score: %d\n\nLevel: %d\nLines: %d" %(self.score, self.level, self.lines),
                         (self.board_width+cell_size, cell_size*5))
-                    self.draw_matrix(self.bground_grid, (0,0))
+                    self.draw_matrix(self.grid, (0,0))
                     self.draw_matrix(self.board, (0,0))
                     self.draw_matrix(self.piece, (self.piece_x, self.piece_y))
                     self.draw_matrix(self.piece, (self.piece_x, self.piece_y))
