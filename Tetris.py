@@ -173,22 +173,23 @@ class Tetris_App(object):
             self.score += 1 if manual else 0
             self.piece_y += 1
             if is_collision(self.board, self.piece, (self.piece_x, self.piece_y)):
+                print("is collision\n");
                 self.board = join_board(
                     self.board,
                     self.piece,
                     (self.piece_x, self.piece_y))
-            self.new_piece()
-            cleared_rows = 0
-            while True:
-                for i, row in enumerate(self.board[: -1]):
-                    if 0 not in row:
-                        self.board = clear_row(self.board, 1)
-                        cleared_rows += 1
-                        break
-                    else:
-                        break
-            self.add_score(cleared_rows)
-            return True
+                self.new_piece()
+                cleared_rows = 0
+                while True:
+                    for i, row in enumerate(self.board[: -1]):
+                        if 0 not in row:
+                            self.board = clear_row(self.board, 1)
+                            cleared_rows += 1
+                            break
+                        else:
+                            break
+                self.add_score(cleared_rows)
+                return True
         return False
 
     def quick_drop(self):
