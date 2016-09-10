@@ -166,6 +166,7 @@ class Tetris_App(object):
             if new_x > cols - len(self.piece[0]):
                 new_x = cols - len(self.piece[0])
             if not is_collision(self.board, self.piece, (new_x, self.piece_y)):
+                print("MOVE: is not collison");
                 self.piece_x = new_x
 
     def drop(self, manual):
@@ -173,7 +174,7 @@ class Tetris_App(object):
             self.score += 1 if manual else 0
             self.piece_y += 1
             if is_collision(self.board, self.piece, (self.piece_x, self.piece_y)):
-                print("is collision\n");
+                print("DROP: is collision\n");
                 self.board = join_board(
                     self.board,
                     self.piece,
@@ -200,7 +201,7 @@ class Tetris_App(object):
     def rotate(self):
         if not self.gameover and not self.paused:
             new_piece = rotate_clock(self.piece)
-            if not is_collision(self.board, self.piece, (self.piece_x, self.piece_y)):
+            if not is_collision(self.board, new_piece, (self.piece_x, self.piece_y)):
                 self.piece = new_piece
 
     def pause(self):
