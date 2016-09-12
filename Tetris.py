@@ -125,7 +125,6 @@ class Tetris_App(object):
         self.next_piece = tetris_pieces[rand(len(tetris_pieces))]
         self.piece_x = int(cols / 2 - len(self.piece[0]) / 2)
         self.piece_y = 0
-        print("NEW_PIECE: creating");
         if is_collision(self.board, self.piece, (self.piece_x, self.piece_y)):
             self.gameover = True
 
@@ -167,7 +166,6 @@ class Tetris_App(object):
             if new_x > cols - len(self.piece[0]):
                 new_x = cols - len(self.piece[0])
             if not is_collision(self.board, self.piece, (new_x, self.piece_y)):
-                print("MOVE: is not collison");
                 self.piece_x = new_x
 
     def drop(self, manual):
@@ -175,12 +173,10 @@ class Tetris_App(object):
             self.score += 1 if manual else 0
             self.piece_y += 1
             if is_collision(self.board, self.piece, (self.piece_x, self.piece_y)):
-                print("DROP: is collision");
                 self.board = join_board(
                     self.board,
                     self.piece,
                     (self.piece_x, self.piece_y))
-                print("DROP: creating new");
                 self.new_piece()
                 cleared_rows = 0
                 while True:
