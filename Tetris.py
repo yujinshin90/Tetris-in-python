@@ -31,15 +31,15 @@ tetris_pieces = [
 ]
 
 colors = [
-    (0,   0,   0  ),
-    (255, 85,  85),
+    (0, 0, 0),
+    (255, 85, 85),
     (100, 200, 115),
     (120, 108, 245),
-    (255, 140, 50 ),
-    (50,  120, 52 ),
-    (146, 202, 73 ),
-    (150, 161, 218 ),
-    (35,  35,  35)
+    (255, 140, 50),
+    (50, 120, 52),
+    (146, 202, 73),
+    (150, 161, 218),
+    (35, 35, 35)
 ]
 
 
@@ -202,13 +202,17 @@ class Tetris_App(object):
             if not is_collision(self.board, new_piece, (self.piece_x, self.piece_y)):
                 self.piece = new_piece
 
+    def counter_rotate(self):
+        for i in xrange(3):
+            self.rotate()
+
     def pause(self):
         self.paused = not self.paused
 
     def start(self):
-            if self.gameover:
-                self.init_game()
-                self.gameover = False
+        if self.gameover:
+            self.init_game()
+            self.gameover = False
 
     def quit(self):
         self.center_msg("Good bye :(")
@@ -220,11 +224,13 @@ class Tetris_App(object):
             'ESCAPE':
                 self.quit,
             'LEFT':
-                lambda:self.move(-1),
+                lambda: self.move(-1),
             'RIGHT':
-                lambda:self.move(+1),
+                lambda: self.move(+1),
+            # 'DOWN':
+            #     lambda: self.drop(True),
             'DOWN':
-                lambda:self.drop(True),
+                self.counter_rotate,
             'UP':
                 self.rotate,
             'p':
@@ -238,7 +244,7 @@ class Tetris_App(object):
         self.paused = False
         cpu = pygame.time.Clock()
         while 1:
-            self.screen.fill((0,0,0))
+            self.screen.fill((0, 0, 0))
             if self.gameover:
                 self.center_msg("Game Over!\n Your score: %d\n\n Press space to continue" % self.score)
             else:
@@ -247,21 +253,21 @@ class Tetris_App(object):
                 else:
                     pygame.draw.line(self.screen,
                                      (255, 255, 255),
-                                     (self.board_width+1, 0),
-                                     (self.board_width+1, self.height-1))
-                    self.disp_msg("Next: ", (self.board_width+cell_size, 2))
+                                     (self.board_width + 1, 0),
+                                     (self.board_width + 1, self.height - 1))
+                    self.disp_msg("Next: ", (self.board_width + cell_size, 2))
 
-                    self.disp_msg("Score: %d\n\nLevel: %d\nLines: %d" %(self.score, self.level, self.lines),
-                        (self.board_width+cell_size, cell_size*5))
-                    self.draw_matrix(self.grid, (0,0))
-                    self.draw_matrix(self.board, (0,0))
+                    self.disp_msg("Score: %d\n\nLevel: %d\nLines: %d" % (self.score, self.level, self.lines),
+                                  (self.board_width + cell_size, cell_size * 5))
+                    self.draw_matrix(self.grid, (0, 0))
+                    self.draw_matrix(self.board, (0, 0))
                     self.draw_matrix(self.piece, (self.piece_x, self.piece_y))
                     self.draw_matrix(self.piece, (self.piece_x, self.piece_y))
-                    self.draw_matrix(self.next_piece, (cols+1, 2))
+                    self.draw_matrix(self.next_piece, (cols + 1, 2))
             pygame.display.update()
 
             for event in pygame.event.get():
-                if event.type == pygame.USEREVENT+1:
+                if event.type == pygame.USEREVENT + 1:
                     self.drop(False)
                 elif event.type == pygame.QUIT:
                     self.quit()
@@ -271,6 +277,7 @@ class Tetris_App(object):
                             key_actions[key]()
 
             cpu.tick(maxfps)
+
 
 if __name__ == "__main__":
     App = Tetris_App()
