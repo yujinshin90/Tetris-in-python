@@ -227,8 +227,8 @@ class Tetris_App(object):
                 lambda: self.move(-1),
             'RIGHT':
                 lambda: self.move(+1),
-            # 'DOWN':
-            #     lambda: self.drop(True),
+            'RSHIFT':
+                lambda: self.drop(True),
             'DOWN':
                 self.counter_rotate,
             'UP':
