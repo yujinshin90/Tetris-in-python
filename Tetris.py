@@ -182,7 +182,7 @@ class Tetris_App(object):
                 while True:
                     for i, row in enumerate(self.board[: -1]):
                         if 0 not in row:
-                            self.board = clear_row(self.board, 1)
+                            self.board = clear_row(self.board, i)
                             cleared_rows += 1
                             break
                     else:
